@@ -1,6 +1,6 @@
 
 var game= {
-	words:["PARIS", "CROISSANT", "BERET", "SEINE", "NAPOLEON", "VOGUE"],
+	words:["PARIS", "CROISSANT", "BERET", "SEINE", "NAPOLEON", "VOGUE", "PARKOUR", "NOUVEAU"],
 	revealed: [],
 	currentWordArray: [],
 	currentWord: "",
@@ -20,7 +20,7 @@ var game= {
 		{
 			this.revealed.push("-");
 		}
-		document.getElementById("guessString").innerHTML = game.revealed.join(" ");
+		document.getElementById("guessString").innerHTML = this.revealed.join(" ");
 		this.guessesLeft = 12;
 		document.getElementById("guessesLeft").innerHTML = this.guessesLeft;
 		this.lettersGuessed = [];
@@ -32,7 +32,7 @@ var game= {
 		this.guessesLeft--;
 		document.getElementById("guessesLeft").innerHTML = this.guessesLeft;
 		this.lettersGuessed.push(wrongGuess);
-		document.getElementById("letGuessed").innerHTML = this.lettersGuessed.join(",");
+		document.getElementById("letGuessed").innerHTML = this.lettersGuessed.join(", ");
 	},
 
 	isGameOver: function()
@@ -40,8 +40,8 @@ var game= {
 		if (this.revealed.indexOf("-") == -1)
 		 {
 		 	this.wins++;
-		 	return true;
 		 	document.getElementById("numWins").innerHTML = this.wins;
+		 	return true;
 		 }
 		 else if(this.guessesLeft >0)
 		 {
@@ -56,6 +56,7 @@ var game= {
 	revealAnswer: function(ind)
 	{
 		this.revealed[ind] = this.currentWordArray[ind];
+		this.currentWordArray[ind] = "-";
 		document.getElementById("guessString").innerHTML = game.revealed.join(" ");
 	}
 
@@ -71,14 +72,16 @@ document.onkeyup = function(event) {
 
 	console.log(userGuess);
 	console.log(indexer);
-	console.log(game.isGameOver());
 	console.log(game.currentWordArray);
-	console.log(game.currentWord);
-	console.log(game.lettersGuessed);
+
 
 	if (indexer >= 0)
 	{
-		game.revealAnswer(indexer);
+		while(indexer >= 0)
+		{
+			game.revealAnswer(indexer);
+			var indexer = game.currentWordArray.indexOf(userGuess);
+		}
 	}
 	else
 	{
